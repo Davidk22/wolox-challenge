@@ -1,4 +1,4 @@
-package com.wolox.challenge.jpa.privilege;
+package com.wolox.challenge.rest.repository.jpa.privilege;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
