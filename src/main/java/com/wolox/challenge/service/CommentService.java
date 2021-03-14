@@ -10,6 +10,9 @@ import com.wolox.challenge.adapter.CommentRestClient;
 import com.wolox.challenge.model.Comment;
 import com.wolox.challenge.model.Post;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class CommentService {
 
@@ -23,14 +26,17 @@ public class CommentService {
 	}
 
 	public List<Comment> getAll() {
+		log.debug("Consuming commentRestClient - Listing all comments");
 		return commentRestClient.findAllComments();
 	}
 
 	public List<Comment> getAllCommentsByName(String name){
+		log.debug("Consuming commentRestClient - Listing all comments by name. Name:"+name);
 		return commentRestClient.findCommentsByName(name);
 	}
 	
 	public List<Comment> getAllCommentsByUserId(String userId){
+		log.debug("Consuming commentRestClient - Listing all comments by user. User:"+userId);
 		List<Post> postsByUser = postService.getAllPostsByUserId(userId);
 		return postsByUser.stream()
 				.map(post -> getAllCommentsByPost(post.getId()))
@@ -43,6 +49,7 @@ public class CommentService {
 	
 	
 	public List<Comment> getAllCommentsByPost(String postId){
+		log.debug("Consuming commentRestClient - Listing all comments by post. Post:");
 		return commentRestClient.findCommentsByPost(postId);
 	}
 }

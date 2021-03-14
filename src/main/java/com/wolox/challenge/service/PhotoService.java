@@ -11,6 +11,9 @@ import com.wolox.challenge.model.Album;
 import com.wolox.challenge.model.Photo;
 import com.wolox.challenge.rest.repository.IPrivilegeRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class PhotoService {
 
@@ -27,10 +30,12 @@ public class PhotoService {
 	}
 	
 	public List<Photo> getAll() {
+		log.debug("Consuming photoRestClient - Listing all photos");
 		return photoRestClient.findAllPhotos();
 	}
 	
 	public List<Photo> getPhotosByUser(String userId){
+		log.debug("Consuming photoRestClient - Listing all photos by user. User:"+userId);
 		List<Album> albumsByUser = albumService.getAlbumsByUser(userId);
 		return albumsByUser.stream()
 			.map(album -> getPhotosByAlbum(album.getId()))
@@ -42,6 +47,7 @@ public class PhotoService {
 	}
 	
 	public List<Photo> getPhotosByAlbum(String albumId){
+		log.debug("Consuming photoRestClient - Listing all photos by album. Album:"+albumId);
 		return photoRestClient.findPhotosByAlbumId(albumId);
 	}
 	

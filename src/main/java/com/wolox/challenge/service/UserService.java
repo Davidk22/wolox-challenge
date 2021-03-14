@@ -10,6 +10,9 @@ import com.wolox.challenge.adapter.UserRestClient;
 import com.wolox.challenge.model.User;
 import com.wolox.challenge.rest.repository.IPrivilegeRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class UserService {
 
@@ -23,14 +26,17 @@ public class UserService {
 	}
 
 	public List<User> getAllUsers() {
+		log.debug("Consuming UserRestClient - Listing all users");
 		return userRestClient.findAllUsers();
 	}
 
 	public User getUserById(String userId) {
+		log.debug("Consuming UserRestClient - Finding user by id User: "+userId);
 		return userRestClient.findUserById(userId);
 	}
 
 	public List<User> getUsersByPrivilegeAndAlbum(String albumId,String privileges){
+		log.debug("Consuming UserRestClient - Listing all users by albumId and Privilege. Album:"+albumId+", Privilege:"+privileges);
 		List<String> users =privilegeRepository.findUsersByPrivilegeAndAlbum(privileges, albumId);
 		return users.stream()
 				.map(user -> userRestClient.findUserById(user))
