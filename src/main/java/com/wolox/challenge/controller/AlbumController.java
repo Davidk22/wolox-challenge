@@ -28,7 +28,7 @@ public class AlbumController {
 	public List<Album> findAll() {
 		return albumService.getAll();
 	}
-	
+
 	@GetMapping("/{userId}")
 	public List<Album> findAllAlbumsByUser(@PathVariable("userId") String userId) {
 		return albumService.getAlbumsByUser(userId);
@@ -36,20 +36,37 @@ public class AlbumController {
 
 	@PostMapping("/insert")
 	public ResponseEntity<String> insertSharedAlbumWithUserAndPrivileges(@RequestBody Privilege privilege) {
-		if(!albumService.validatePrivilegeRecord(privilege.getId().getUserId(), privilege.getId().getAlbumId())) {
-			albumService.saveAlbumByPrivilegeAndUser(privilege.getId().getAlbumId(), privilege.getId().getUserId(), privilege.getPrivileges());;
-			return new ResponseEntity<String>("Privilige created succesfully", HttpStatus.CREATED);
+		if (albumService.validatePrivilegeData(privilege.getId().getAlbumId(), privilege.getId().getUserId(),
+				privilege.getPrivileges())) {
+			if (!albumService.validatePrivilegeRecord(privilege.getId().getUserId(), privilege.getId().getAlbumId())) {
+				if (albumService.validatePrivilege(privilege.getPrivileges())) {
+					albumService.saveAlbumByPrivilegeAndUser(privilege.getId().getAlbumId(),
+							privilege.getId().getUserId(), privilege.getPrivileges());
+					return new ResponseEntity<String>("Privilige created succesfully", HttpStatus.CREATED);
+				}
+				return new ResponseEntity<String>("Privilege value must be 0 (read), 1(write) or 2(both)", HttpStatus.BAD_REQUEST);
+			}
+			return new ResponseEntity<String>("The privilege record already exists", HttpStatus.CONFLICT);
 		}
-		return new ResponseEntity<String>("The privilege record already exists", HttpStatus.CONFLICT);			
+		return new ResponseEntity<String>("Data can't be null or empty", HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@PutMapping("/update")
 	public ResponseEntity<String> updateSharedAlbumWithUserAndPrivileges(@RequestBody Privilege privilege) {
-		if(albumService.validatePrivilegeRecord(privilege.getId().getUserId(), privilege.getId().getAlbumId())) {
-			albumService.saveAlbumByPrivilegeAndUser(privilege.getId().getAlbumId(), privilege.getId().getUserId(), privilege.getPrivileges());;
-			return new ResponseEntity<String>("Privilige updated succesfully", HttpStatus.ACCEPTED);
+		if (albumService.validatePrivilegeData(privilege.getId().getAlbumId(), privilege.getId().getUserId(),
+				privilege.getPrivileges())) {
+			if (albumService.validatePrivilegeRecord(privilege.getId().getUserId(), privilege.getId().getAlbumId())) {
+				if (albumService.validatePrivilege(privilege.getPrivileges())) {
+					albumService.saveAlbumByPrivilegeAndUser(privilege.getId().getAlbumId(),
+							privilege.getId().getUserId(), privilege.getPrivileges());
+					return new ResponseEntity<String>("Privilige updated succesfully", HttpStatus.ACCEPTED);
+				}
+				return new ResponseEntity<String>("Privilege value must be 0 (read), 1(write) or 2(both)",
+						HttpStatus.BAD_REQUEST);
+			}
+			return new ResponseEntity<String>("The privilege record doesn't exist", HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<String>("The privilege record doesn't exist", HttpStatus.BAD_REQUEST);			
+		return new ResponseEntity<String>("Data can't be null or empty", HttpStatus.BAD_REQUEST);
 	}
-	
+
 }

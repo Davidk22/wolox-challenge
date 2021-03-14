@@ -36,5 +36,5 @@ public class UserService {
 				.map(user -> userRestClient.findUserById(user))
 				.collect(Collectors.toList());
 	}
-
+	
 }

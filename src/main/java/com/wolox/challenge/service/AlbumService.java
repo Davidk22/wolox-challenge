@@ -46,4 +46,14 @@ public class AlbumService {
 	public Boolean validatePrivilegeRecord(String user_id,String album_id) {
 		return privilegeRepository.existsById(new PrivilegeId(user_id,album_id));
 	}
+	
+	public Boolean validatePrivilegeData(String album_id, String user_id, String privileges) {
+		return (album_id != null ? !album_id.isEmpty() : false) &&
+			   (user_id != null ? !user_id.isEmpty() : false) &&
+			   (privileges != null ? !privileges.isEmpty() : false);
+	}
+	
+	public Boolean validatePrivilege(String privileges) {
+		return (privileges.equals("0") || privileges.equals("1") || privileges.equals("2"));
+	}
 }
