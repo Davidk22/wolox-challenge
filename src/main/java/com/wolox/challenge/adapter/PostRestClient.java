@@ -12,6 +12,7 @@ public class PostRestClient {
 
 	private final static String FIND_BY_ID="/posts/{id}";
 	private final static String FIND_ALL="/posts";
+	private final static String FIND_ALL_POSTS_BY_USERID="/users/{userId}/posts";
 	
 	private final WebClient webClient;
 
@@ -34,5 +35,14 @@ public class PostRestClient {
 				.bodyToFlux(Post.class)
 				.collectList()
 				.block();
+	}
+	
+	public List<Post> findPostsByUserId(String userId){
+		return this.webClient.get()
+				.uri(FIND_ALL_POSTS_BY_USERID, userId)
+				.retrieve()
+				.bodyToFlux(Post.class)
+				.collectList()
+				.block();	
 	}
 }

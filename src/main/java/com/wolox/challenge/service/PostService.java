@@ -26,4 +26,7 @@ public class PostService {
 		return postRestClient.findPostById(postId);
 	}
 	
+	public List<Post> getAllPostsByUserId(String userId){
+		return postRestClient.findPostsByUserId(userId); 
+	}
 }

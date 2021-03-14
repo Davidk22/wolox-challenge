@@ -11,7 +11,7 @@ import com.wolox.challenge.model.Comment;
 public class CommentRestClient {
 	private final static String FIND_BY_ID="/comments/{id}";
 	private final static String FIND_ALL="/comments";
-	private final static String FIND_ALL_COMMENTS_BY_USERID="/users/{id}/comments";
+	private final static String FIND_ALL_COMMENTS_BY_POSTS="/posts/{id}/comments";
 	private final static String FIND_ALL_COMMENTS_BY_NAME="/comments?name={name}";
 	
 	private final WebClient webClient;
@@ -37,9 +37,9 @@ public class CommentRestClient {
 				.block();
 	}
 	
-	public List<Comment> findCommentsByUserId(String userId){
+	public List<Comment> findCommentsByPost(String postId){
 		return this.webClient.get()
-				.uri(FIND_ALL_COMMENTS_BY_USERID, userId)
+				.uri(FIND_ALL_COMMENTS_BY_POSTS, postId)
 				.retrieve()
 				.bodyToFlux(Comment.class)
 				.collectList()

@@ -10,7 +10,7 @@ import com.wolox.challenge.rest.repository.jpa.privilege.PrivilegeId;
 
 public interface IPrivilegeRepository extends JpaRepository<Privilege, PrivilegeId> {
 
-	@Query(value = "SELECT USER_ID FROM PRIVILEGES WHERE PRIVILEGE_READ_WRITE=?1 AND ALBUM_ID=?2", nativeQuery = true)
+	@Query(value = "SELECT USER_ID FROM PRIVILEGES WHERE PRIVILEGES=?1 AND ALBUM_ID=?2", nativeQuery = true)
 	List<String> findUsersByPrivilegeAndAlbum(String privilege, String albumId);
 
 }
