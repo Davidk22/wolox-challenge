@@ -69,8 +69,7 @@ public class AlbumService {
 				privilege.getPrivileges())) {
 			if (validatePrivilegeRecord(privilege.getId().getUserId(), privilege.getId().getAlbumId())) {
 				if (validatePrivilege(privilege.getPrivileges())) {
-					saveAlbumByPrivilegeAndUser(privilege.getId().getAlbumId(),
-							privilege.getId().getUserId(), privilege.getPrivileges());
+					privilegeRepository.saveAndFlush(privilege);
 					return new ResponseEntity<String>(PRIVILEGE_UPDATED, HttpStatus.ACCEPTED);
 				}
 				throw new PrivilegeValueNotAllowedException();
